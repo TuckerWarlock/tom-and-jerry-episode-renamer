@@ -82,6 +82,18 @@ def find_best_match(file_title, file_year, episodes):
         return best_match
     return None
 
+def get_series_title_by_year(year):
+    year = int(year)  # Ensure the year is an integer
+    if 1940 <= year <= 1967:
+        return "Tom and Jerry"
+    elif year == 1975:
+        return "The Tom & Jerry Show"
+    elif 1990 <= year <= 1993:
+        return "Tom and Jerry Kids Show"
+    elif 2005 <= year <= 2008:
+        return "Tom and Jerry Tales"
+    else:
+        return None  # For years that don't match any known series
 
 # Main function to rename files based on episode information
 def rename_files(directory_path, csv_file_path, results_csv_path, actually_rename, errors_csv):
@@ -98,12 +110,18 @@ def rename_files(directory_path, csv_file_path, results_csv_path, actually_renam
             title_with_number = parts[0].strip()
             title = ' '.join(title_with_number.split()[1:])  # Remove leading number
             file_year = parts[1].rstrip('].avi')  # Extract the year from the file name
+            series_title = get_series_title_by_year(file_year)  # Determine the series title based on the year
+            
+            if series_title is None:
+                print(f"Year {file_year} does not match any known series, skipping: {file_name}")
+                continue  # Skip files that don't match any known series based on year
+            
             norm_title = normalize_title(title)
             best_match = find_best_match(norm_title, file_year, episodes)
             if best_match:
                 code, _, orig_title, year = best_match
                 sanitized_title = sanitize_filename(orig_title)  # Sanitize the title
-                new_name = f"Tom and Jerry.{code}.{sanitized_title}.{year}.avi"
+                new_name = f"{series_title}.{code}.{sanitized_title}.{year}.avi"
                 results.append((file_name, new_name))
                 if actually_rename:
                     original_full_path = os.path.join(directory_path, file_name)
