@@ -1,0 +1,6 @@
+*.DS_Store
+*errors.csv
+*resuts.csv
+*outliers.csv
+*/*cleaned.csv
+output/*
