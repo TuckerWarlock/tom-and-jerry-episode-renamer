@@ -1,4 +1,5 @@
 # Tom and Jerry Episode Renamer - Plex
+Inspired by: https://github.com/macdonaldr93/rename-looney-tunes-gold-collection-plex
 
 ## Overview
 This Python script automates the process of renaming Tom and Jerry episode files based on a structured CSV file containing episode metadata (episode code, title, and original air date). The script matches filenames to episode titles, renames files to include the show title, season and episode code, the original title, and the air year, and generates a report of actions taken.
